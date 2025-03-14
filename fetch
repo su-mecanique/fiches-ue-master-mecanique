@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+curl -u ${DROPSU_USER}:${DROPSU_PASS} -X PROPFIND \
+    https://dropsu.sorbonne-universite.fr/remote.php/dav/files/${DROPSU_USER}/${FOLDER} | xmllint --format -
