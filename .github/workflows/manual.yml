@@ -12,6 +12,7 @@ jobs:
   update_description_files:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
+    environment: "dropsu-access"
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -27,7 +28,7 @@ jobs:
         DROPSU_PASS: ${{ secrets.DROPSU_PASS }}
         FOLDER: test_dva
       run: |
-        env DROPSU_USER=${{ secrets.DROPSU_USER }} DROPSU_PASS=${{ secrets.DROPSU_PASS }} FOLDER=test_dva python3 fetch
+        ./fetch
         ls -la . figures
       
     # Auto-commit changed files
