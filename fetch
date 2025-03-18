@@ -1,6 +1,52 @@
-#!/usr/bin/env bash
+#!/usr/bin/env python3
 
-set -euo pipefail
+import requests
+import os
+import xml.etree.ElementTree as ET
 
-curl -u ${DROPSU_USER}:${DROPSU_PASS} -X PROPFIND \
-    https://dropsu.sorbonne-universite.fr/remote.php/dav/files/${DROPSU_USER}/${FOLDER} | xmllint --format -
+from pathlib import Path
+
+ENDPOINT = "https://dropsu.sorbonne-universite.fr"
+user = os.getenv("DROPSU_USER")
+passwd = os.getenv("DROPSU_PASS")
+folder = os.getenv("FOLDER")
+
+types = {
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "image/jpg",
+    "image/jpeg",
+    "image/png",
+}
+
+def should_download(response, filetypes):
+    for propstat in response.iter("{DAV:}propstat"):
+        content_type = propstat.find("{DAV:}prop").find("{DAV:}getcontenttype")
+        if content_type is not None:
+            return content_type.text in filetypes
+    return False
+
+def get_files_list(user, passwd, folder):
+    r = requests.request(
+        method="PROPFIND",
+        url=f"{ENDPOINT}/remote.php/dav/files/{user}/{folder}",
+        auth=(user, passwd)
+    )
+
+    tree = ET.fromstring(r.text)
+    return [Path(response.find("{DAV:}href").text)
+            for response in tree if should_download(response, types)]
+
+def download(user, password, file, destination):
+    print(f"Downloading {destination}/{file.name}...")
+    r = requests.get(f"{ENDPOINT}/{file}", auth=(user, passwd))
+    with open(Path(destination) / file.name, 'wb') as fh:
+        fh.write(r.content)
+
+wanted_xlsx = get_files_list(user, passwd, folder)
+wanted_figures = get_files_list(user, passwd, folder + "/figures")
+
+for file in wanted_xlsx:
+    download(user, passwd, file, '.')
+
+for file in wanted_figures:
+    download(user, passwd, file, 'figures')
