@@ -28,7 +28,7 @@ jobs:
         FOLDER: test_dva
       run: |
         python3 fetch
-        echo test
+        ls -la . figures
       
     # Auto-commit changed files
     - name: Auto-commit
