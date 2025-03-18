@@ -17,7 +17,7 @@ jobs:
     steps:
     # Runs a single command using the runners shell
     - name: Install dependencies
-      run: sudo apt-get update && sudo apt-get install curl libxml2-utils
+      run: sudo apt-get update && sudo apt-get install curl libxml2-utils python3-requests
 
     - uses: actions/checkout@v4
     
