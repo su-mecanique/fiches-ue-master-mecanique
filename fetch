@@ -3,6 +3,7 @@
 import requests
 import os
 import xml.etree.ElementTree as ET
+import sys
 
 from pathlib import Path
 
@@ -10,6 +11,10 @@ ENDPOINT = "https://dropsu.sorbonne-universite.fr"
 user = os.getenv("DROPSU_USER")
 passwd = os.getenv("DROPSU_PASS")
 folder = os.getenv("FOLDER")
+
+if None in {user, passwd, folder}:
+    print("Environment variables undefined")
+    sys.exit(1)
 
 types = {
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
