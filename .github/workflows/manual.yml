@@ -26,7 +26,9 @@ jobs:
         DROPSU_USER: ${{ secrets.DROPSU_USER }}
         DROPSU_PASS: ${{ secrets.DROPSU_PASS }}
         FOLDER: test_dva
-      run: python3 fetch
+      run: |
+        python3 fetch
+        echo test
       
     # Auto-commit changed files
     - name: Auto-commit
