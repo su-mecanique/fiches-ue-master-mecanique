@@ -12,7 +12,9 @@ user = os.getenv("DROPSU_USER")
 passwd = os.getenv("DROPSU_PASS")
 folder = os.getenv("FOLDER")
 
-if None in {user, passwd, folder}:
+variables = {user, passwd, folder}
+
+if None in variables or "" in variables:
     print("Environment variables undefined")
     sys.exit(1)
 
