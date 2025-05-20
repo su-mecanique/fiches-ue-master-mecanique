@@ -4,7 +4,7 @@ name: Manual workflow
 
 # Controls when the action will run. Workflow runs when manually triggered using the UI
 # or API.
-on: workflow_dispatch
+on: [workflow_dispatch, push]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -17,7 +17,7 @@ jobs:
     steps:
     # Runs a single command using the runners shell
     - name: Install dependencies
-      run: sudo apt-get update && sudo apt-get install curl libxml2-utils
+      run: sudo apt-get update && sudo apt-get install curl libxml2-utils python3-requests
 
     - uses: actions/checkout@v4
     
@@ -26,7 +26,9 @@ jobs:
         DROPSU_USER: ${{ secrets.DROPSU_USER }}
         DROPSU_PASS: ${{ secrets.DROPSU_PASS }}
         FOLDER: test_dva
-      run: ./fetch
+      run: |
+        ./fetch
+        ls -la . figures
       
     # Auto-commit changed files
     - name: Auto-commit
