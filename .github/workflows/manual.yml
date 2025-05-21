@@ -25,7 +25,8 @@ jobs:
       env:
         DROPSU_USER: ${{ secrets.DROPSU_USER }}
         DROPSU_PASS: ${{ secrets.DROPSU_PASS }}
-        FOLDER: test_dva
+        DROPSU_FOLDER: ${{ vars.DROPSU_FOLDER }}
+        DROPSU_ENDPOINT: ${{ vars.DROPSU_ENDPOINT }}
       run: |
         ./fetch
         ls -la . figures

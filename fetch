@@ -7,10 +7,10 @@ import sys
 
 from pathlib import Path
 
-ENDPOINT = "https://dropsu.sorbonne-universite.fr"
+ENDPOINT = os.getenv("DROPSU_ENDPOINT")
 user = os.getenv("DROPSU_USER")
 passwd = os.getenv("DROPSU_PASS")
-folder = os.getenv("FOLDER")
+folder = os.getenv("DROPSU_FOLDER")
 
 variables = {user, passwd, folder}
 
