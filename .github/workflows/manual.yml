@@ -36,4 +36,4 @@ jobs:
       uses: stefanzweifel/git-auto-commit-action@v5
       with:
         commit_message: "Mise à jour des fiches d'UE"
-        commit_user: ${{ github.actor }}
+        commit_user_name: ${{ github.actor }}
