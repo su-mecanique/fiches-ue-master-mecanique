@@ -51,10 +51,11 @@ def download(user, password, file, destination):
         fh.write(r.content)
 
 wanted_xlsx = get_files_list(user, passwd, folder)
-wanted_figures = get_files_list(user, passwd, folder + "/figures")
 
 for file in wanted_xlsx:
-    download(user, passwd, file, '.')
+    download(user, passwd, file, 'fiches')
 
-for file in wanted_figures:
-    download(user, passwd, file, 'figures')
+if False:
+    wanted_figures = get_files_list(user, passwd, folder + "/figures")
+    for file in wanted_figures:
+        download(user, passwd, file, 'figures')
