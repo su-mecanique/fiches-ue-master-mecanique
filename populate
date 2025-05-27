@@ -1,0 +1,30 @@
+#!/usr/bin/env python3
+
+import argparse
+import pathlib
+
+from shutil import copyfile
+from ue_mecanique import load_codes_ue
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Populate UE directory from template")
+    parser.add_argument("template", type=pathlib.Path)
+    parser.add_argument("list_ue", type=pathlib.Path)
+    parser.add_argument("output_dir", type=pathlib.Path)
+
+    args = parser.parse_args()
+
+    # Creating output directory
+    args.output_dir.mkdir(parents=True, exist_ok=True)
+    
+    # Loading set of all UE codes
+    codes_ue = load_codes_ue(args.list_ue)
+
+    # Copying template
+    for ue_code in codes_ue.keys():
+        copyfile(args.template, args.output_dir / f"{ue_code}.xlsx")
+
+
+if __name__ == "__main__":
+    main()
