@@ -2,6 +2,7 @@
 
 import argparse
 import pathlib
+import re
 
 from shutil import copyfile
 from ue_mecanique import load_codes_ue
@@ -21,8 +22,11 @@ def main():
     # Loading set of all UE codes
     codes_ue = load_codes_ue(args.list_ue)
 
+    # Filtering relevant UE codes
+    pattern = re.compile('UM[45]ME')
+
     # Copying template
-    for ue_code in codes_ue.keys():
+    for ue_code in filter(pattern.match, codes_ue.keys()):
         copyfile(args.template, args.output_dir / f"{ue_code}.xlsx")
 
 
