@@ -39,7 +39,9 @@ def get_files_list(user, passwd, folder):
         auth=(user, passwd)
     )
 
-    print(r.text)
+    if not r.ok:
+        raise RuntimeError(f"Files list returned HTTP code {r.status_code}")
+
     tree = ET.fromstring(r.text)
     return [Path(response.find("{DAV:}href").text)
             for response in tree if should_download(response, types)]
@@ -47,6 +49,10 @@ def get_files_list(user, passwd, folder):
 def download(user, password, file, destination):
     print(f"Downloading {destination}/{file.name}...")
     r = requests.get(f"{ENDPOINT}/{file}", auth=(user, passwd))
+
+    if not r.ok:
+        raise RuntimeError(f"Files list returned HTTP code {r.status_code}")
+
     with open(Path(destination) / file.name, 'wb') as fh:
         fh.write(r.content)
 
