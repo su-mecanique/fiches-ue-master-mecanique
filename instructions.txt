@@ -1,0 +1,19 @@
+Bonjour,
+
+Vous trouverez dans le lien suivant les fiches d'UE du master de mécanique.
+
+> https://dropsu.sorbonne-universite.fr/s/qRE6iTmWGiNSrJ9
+
+Veuillez s'il-vous-plait suivre les instructions suivantes pour votre fiche
+d'UE :
+
+1. Seule la colonne D, en rouge et intitulée "value" est à remplir
+2. Les case entourées de rouge sont obligatoires
+3. Veuillez ne pas changer le contenu des colonnes A, B, et C
+4. Certaines cases ont des choix dans un menu déroulant (p. ex. semestre)
+5. Il est possible d'insérer une (seule) image dans la feuille Excel. Le
+placement de cette image n'est pas important.
+6. Merci de ne pas renommer les fichiers.
+
+Bien cordialement,
+
