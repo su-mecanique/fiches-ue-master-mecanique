@@ -12,6 +12,10 @@ user = os.getenv("DROPSU_USER")
 passwd = os.getenv("DROPSU_PASS")
 folder = os.getenv("DROPSU_FOLDER")
 
+# Remove trailing /
+if ENDPOINT[-1] == '/':
+    ENDPOINT = ENDPOINT[:-1]
+
 variables = {user, passwd, folder}
 
 if None in variables or "" in variables:
@@ -47,8 +51,8 @@ def get_files_list(user, passwd, folder):
             for response in tree if should_download(response, types)]
 
 def download(user, password, file, destination):
-    print(f"Downloading {destination}/{file.name}...")
-    r = requests.get(f"{ENDPOINT}/{file}", auth=(user, passwd))
+    print(f"Downloading {ENDPOINT}{file} to {destination}/{file.name}...")
+    r = requests.get(f"{ENDPOINT}{file}", auth=(user, passwd))
 
     if not r.ok:
         raise RuntimeError(f"Files list returned HTTP code {r.status_code} ({r.reason})")
