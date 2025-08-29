@@ -6,6 +6,7 @@ import xml.etree.ElementTree as ET
 import sys
 
 from pathlib import Path
+from hashlib import sha1
 
 ENDPOINT = os.getenv("DROPSU_ENDPOINT")
 user = os.getenv("DROPSU_USER")
@@ -51,14 +52,29 @@ def get_files_list(user, passwd, folder):
             for response in tree if should_download(response, types)]
 
 def download(user, password, file, destination):
-    print(f"Downloading {ENDPOINT}{file} to {destination}/{file.name}...")
+    print(f"Downloading {ENDPOINT}{file} to {destination}/{file.name}... ", end="")
     r = requests.get(f"{ENDPOINT}{file}", auth=(user, passwd))
 
     if not r.ok:
         raise RuntimeError(f"Files list returned HTTP code {r.status_code} ({r.reason})")
 
-    with open(Path(destination) / file.name, 'wb') as fh:
+    with open(Path(destination) / file.name, 'rb+') as fh:
+        sha_remote = sha1(r.content).hexdigest()
+        sha_local = sha1(fh.read()).hexdigest()
+
+        print(f"{sha_remote} {sha_local} ", end="")
+
+        if sha_remote == "8451e35efe7632bd1888ce9ce2f4713a4f8159ad":
+            print(f"❌ (remote is template)")
+            return
+
+        if sha_remote == sha_local:
+            print(f"❌ (identical)")
+            return
+
+        fh.seek(0)
         fh.write(r.content)
+        print("✅")
 
 wanted_xlsx = get_files_list(user, passwd, folder)
 
