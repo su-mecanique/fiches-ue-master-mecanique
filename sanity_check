@@ -1,0 +1,27 @@
+#!/usr/bin/env python3
+
+import argparse
+import pathlib
+import re
+import sys
+
+from shutil import copyfile
+from ue_mecanique import load_excel
+from glob import glob
+
+
+def main():
+    corrupt_files = []
+    for file in glob('fiches/*.xlsx'):
+        try:
+            load_excel(file)
+        except:
+            corrupt_files.append(file)
+
+    if len(corrupt_files) != 0:
+        print("\n".join(corrupt_files))
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()
