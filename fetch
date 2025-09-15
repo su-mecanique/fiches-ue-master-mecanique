@@ -72,7 +72,7 @@ def download(user, password, file, destination):
             print(f"❌ (identical)")
             return
 
-        fh.seek(0)
+    with open(Path(destination) / file.name, 'wb') as fh:
         fh.write(r.content)
         print("✅")
 
