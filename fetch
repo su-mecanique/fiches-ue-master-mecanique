@@ -58,19 +58,22 @@ def download(user, password, file, destination):
     if not r.ok:
         raise RuntimeError(f"Files list returned HTTP code {r.status_code} ({r.reason})")
 
-    with open(Path(destination) / file.name, 'rb+') as fh:
-        sha_remote = sha1(r.content).hexdigest()
-        sha_local = sha1(fh.read()).hexdigest()
+    try:
+        with open(Path(destination) / file.name, 'rb+') as fh:
+            sha_remote = sha1(r.content).hexdigest()
+            sha_local = sha1(fh.read()).hexdigest()
 
-        print(f"{sha_remote} {sha_local} ", end="")
+            print(f"{sha_remote} {sha_local} ", end="")
 
-        if sha_remote == "8451e35efe7632bd1888ce9ce2f4713a4f8159ad":
-            print(f"❌ (remote is template)")
-            return
+            if sha_remote == "8451e35efe7632bd1888ce9ce2f4713a4f8159ad":
+                print(f"❌ (remote is template)")
+                return
 
-        if sha_remote == sha_local:
-            print(f"❌ (identical)")
-            return
+            if sha_remote == sha_local:
+                print(f"❌ (identical)")
+                return
+    except FileNotFoundError:
+        pass
 
     with open(Path(destination) / file.name, 'wb') as fh:
         fh.write(r.content)
