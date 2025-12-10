@@ -29,7 +29,7 @@ jobs:
         DROPSU_ENDPOINT: ${{ vars.DROPSU_ENDPOINT }}
       run: |
         ./fetch
-        ls -la . figures
+        ls -la .
       
     # Auto-commit changed files
     - name: Auto-commit
